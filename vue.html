@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style type="text/css">
+    body
+    #item{
+        width: 150px;
+        height: 1000px;
+        float: left;
+        border: 0px solid #ccc;
+    }
+   #item li{
+     list-style: none;
+     margin-top: 20px;
+    }
+    #screen ,#screen1{
+        position: absolute;
+        top:0;
+        left: 0;
+        background:#fff;
+        z-index: 9998;
+        display:none;
+        
+    }
+    #repass{
+        text-align: center;
+        border: 1px solid #ccc;
+        height: 300px;
+        width: 300px;
+        padding-right: 0;
+        border-radius: 5px;
+        box-shadow: 0 0 25px #dcdfe6;
+    }
+    .stext{
+        width: 300px;
+        height: 80px;
+        overflow: auto;
+        background-color: #f4f4f4;
+        padding-left: 20px;
+        padding-top: 10px;
+        float: left;
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+    .biggest{
+        width:900px;
+        height: 80px;
+        overflow: hidden;
+        
+    }
+    .biggest1{
+        width: 900px;
+        height: 160;
+        
+    }
+    .router-link-active{
+        color:cornflowerblue;
+        font-weight:400;
+        font-size:40px; 
+    }
+    #app{
+        margin-top: 20px;
+    }
+    #cont1{
+       margin-top: 20px;
+        width: 80%;
+        float: left;
+    }
+    #ra{
+        margin-left: 10%;
+    }
+    .stext span{
+     display:none;
+      text-decoration:none;
+      }
+      .stext:hover span{
+      display:block;
+      position:absolute;
+      color:blue;}
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="item">
+            <ul >
+                <li @click="show"><router-link to="/boot"  tag="span" >自动评价</router-link></li>
+                <li  @click="sh"><router-link to="/foot" tag="span">批量评价</router-link></li>
+            </ul>
+        </div>
+        <div v-if="show1">
+        <div id="item1">
+            <font size="+2">自动评价</font> <button @click="change">{{button}}</button></br>
+            <div id="screen" >
+                <div id="repass">
+                    <center><h4>开启成功</h4></center>
+                    软件服务到期将会自动关闭，为有效避免店铺差评，记得续费和开启哦！</p>
+                    <input type="checkbox">软件到期短信提醒我</p>
+                    <input type="text" placeholder="填写手机号">&nbsp;&nbsp;<button>获取验证码</button></p>
+                    <input type="text" placeholder="填写验证码">&nbsp;&nbsp;<button disabled>开启</button></p>
+                    <span @click="close1">我知道了</span>
+                </div>
+            </div>
+            <div id="screen1" >
+                <div id="repass">
+                    <h3>提示</h3>
+                    <h5>  亲，您确定要关闭自动评价</h5>
+                    关闭自动评价后，将会影响你的店铺DSR评分<p>
+                    <button @click="close">确认</button>&nbsp;&nbsp;&nbsp;<button >取消</button>
+                </div>
+            </div>
+        </div> 
+        <div id="time"><font color="#d3d3d3">{{time}}</font></div></br>
+        收货立即评价、定时抢评、中差评短信预警、全面保障店铺DSR评分</br>
+        <font color="red">重要说明：为避免授权失效，如您续费店长之后请重新登录该页面确认自动评价开关是否保持开启状态</font></br>
+        <div id="cont1">
+        <font size="+2">设置规则</font></br>
+            选择评价类型：<input type="radio" name="e" id="good" checked><label for="good">好评(建议使用)</label> 
+                <input type="radio" name="e" id="mid"> <label for="mid" >中评 </label>
+                <input type="radio" name="e" id="bad"><label for="bad">差评</label></p>
+            设置评价规则：
+            <div id="ra"><input type="radio" name="r" id="success" ><label for="success">交易成功后立即评价<font color="#d3d3d3">（优先评价，容易获得买家好感，同时也能最快获悉对方是否评价）</font></label> </p></div>
+                <div id="ra"><input type="radio" name="r" id="delay" v-model="c1" value="c1"> <label for="delay" >交易成功后延迟7天给予评价 </label><input type="checkbox"  value="c1"  v-model="c2" @click="h">买家已评，卖家立即回评<font color="#d3d3d3">（不想买家的评价在宝贝评价中提前展示）</font></p></div>
+                <div id="ra"><input type="radio" name="r" id="rob"v-model="c1" value="c11"><label for="rob" >抢评，在评价有效期的最后阶段评价</label><input type="checkbox"  value="c11" v-model="c3" @click="h1">买家已评，卖家立即回评<font color="#d3d3d3">（既不想店铺快速增长信誉又不想白白丢分）</font> </p></div>
+                <div id="ra"><input type="radio" name="r" id="no"><label for="no">买家未评，卖家不回评；买家已评，卖家立即回评</label><font color="#d3d3d3">（店铺想长期享受官方对新店的扶持政策又不想增长信誉）</font> </p></div>
+            设置回评过滤条件：
+                <input type="checkbox">给过差评的用户自动加入黑名单</p>
+            黑名单评价规则：
+                <input type="radio" checked name="black">黑名单中的用户不自动评价
+                <input type="radio" name="black">黑名单中的用户自动回复差评</p>
+            设置回评内容：(最多10条，多条将随机评价)
+    <div :class="biggest">
+            <cmp  ><div>感谢您对本店的支持，欢迎下次再来，祝您生活愉快，工作顺利！</div></cmp>
+            <cmp  ><div>感谢您对本店的支持，欢迎下次再来，祝您生活愉快，工作顺利！</div></cmp>
+            <cmp ><div>感谢亲光临本店，我们将一如既往的为您提供优质时尚高性价比的服务，我们完善的售前，售后服务，将全程为您的愉快购物保驾护航，还请多多关注我店的更多产品 </div></cmp>
+            <cmp ><div>感谢淘宝让我们有认识的机会，我们会信守承诺，先做人，后做事， 我们会让时间证明，您选择我们不会有错！我们能保证产品原装正品，请对我们有十二分的信任，我们将感激不尽 </div></cmp>
+            <cmp ><div>感谢亲光临本店，我们将一如既往的为您提供优质时尚高性价比的服务，我们完善的售前，售后服务，将全程为您的愉快购物保驾护航，还请多多关注我店的更多产品 </div></cmp>
+            <cmp ><div>感谢亲光临本店，我们将一如既往的为您提供优质时尚高性价比的服务，我们完善的售前，售后服务，将全程为您的愉快购物保驾护航，还请多多关注我店的更多产品 </div></cmp>
+        </div>
+        <div  @click="big" >
+            <font color="blue">更多</font>
+        </div>
+    
+</div>
+</div>
+<router-view ></router-view>
+    </div>
+    <script src="https://cdn.staticfile.org/vue/2.4.2/vue.min.js"></script>
+    <script src="https://cdn.staticfile.org/vue-router/2.7.0/vue-router.min.js"></script>
+    <script>
+        const mycomponent=Vue.extend({
+            template:`<div class="stext" ><slot></slot><span >取消应用</span></div>`
+        })
+        var footer={template:`<div style="color:'red' font-size:'50px'">批量评论</div>`}
+        var router = new VueRouter({
+        routes:[
+            {path:'/foot',component:footer}            
+        ]
+        })
+    var vm=new Vue(
+        {
+            el:"#app",
+            data:{
+               button:"关",
+               time:"",
+               c1:"",
+               c2:"",
+               c3:"",
+               biggest:'biggest',
+               flag:true,
+               show1:true,
+            },
+            methods:{
+                show:function(){
+                    this.show1=true
+                },
+                sh:function(){
+                    this.show1=false
+                },
+                big:function(){
+                    this.flag=!this.flag;
+                    if(!this.flag)
+                    this.biggest='biggest1';
+                    else
+                    this.biggest='biggest';
+                },
+                change:function(){
+                    var screen=document.getElementById("screen");
+                     var screen1=document.getElementById("screen1");
+                     var time=document.getElementById("time");
+                     var time=new Date();
+                    var myYear=time.getFullYear();
+                    var myMonth=time.getMonth()+1;
+                    var myDay=time.getDate();
+                    var myhour=time.getHours();
+                    var myminute=time.getMinutes();
+                    var mysecond=time.getSeconds();
+                    if(myMonth<10){
+                        myMonth="0"+myMonth;
+                    }
+                    if(myDay<10){
+                        myDay="0"+myDay;
+                    }
+                    var date=myYear+"-"+myMonth+"-"+myDay+" "+myhour+":"+myminute+":"+mysecond;
+                    if(this.button=="关")
+                  { this.button="开";screen.style.display="block";screen1.style.display="none";
+                  this.time="开启时间"+date;
+                }
+                    else
+                   { this.button="关";screen.style.display="none";screen1.style.display="block";
+                   this.time="关闭时间"+date;
+                }
+                },
+                close:function(){
+                    var screen1=document.getElementById("screen1")
+                    screen1.style.display="none";
+                },
+                close1:function(){
+                    var screen=document.getElementById("screen")
+                    screen.style.display="none";
+                },
+                h:function(){
+                   if(this.c2==true)
+                  { this.c1="c1";
+                  this.c3=false}
+                },
+                h1:function(){
+                    if(this.c3==true)
+                    {this.c1="c11";
+                    this.c2=false}
+                        }
+                    },
+            components:{
+                cmp:mycomponent,
+                      },
+              router:router     
+        }
+    ).$mount('#app')
+    
+    window.onload=function(){
+        var screen=document.getElementById("screen");
+        var screen1=document.getElementById("screen1");
+        var top=(getInner().height-250)/2;
+        var left=(getInner().width-360)/2;
+        screen1.style.top=screen.style.top=top+'px';
+        screen1.style.left=screen.style.left=left+'px';
+        function getInner(){
+            return{
+                width:window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,
+                height:window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight
+            }
+        }
+    }
+    </script>
+</body>
+</html>
